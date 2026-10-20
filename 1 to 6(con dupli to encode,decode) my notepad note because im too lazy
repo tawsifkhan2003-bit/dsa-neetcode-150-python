@@ -1,0 +1,155 @@
+duplicate:
+	seen = set()
+        for num in nums:
+            if num in seen:
+                return True
+            seen.add(num)
+        return False
+
+anagram: 
+class Solution(object):
+    def isAnagram(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: bool
+        """
+        if len(s) != len(t):
+            return False
+        count = {}
+        for i in s:
+            count[i] = count.get(i, 0) + 1#u can just use counter btw
+        for j in t:
+            if j not in count:
+                return False
+            else:
+                count[j] = count[j] - 1
+		#not first try
+                if count[j] < 0:
+                    return False # simplified
+        return True
+        """
+        first try:
+        for k in count:
+            if count[k] == 0:
+                return True
+            else:
+                return False"""
+two sum:
+class Solution(object):
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+       
+        sum = 0
+        for i in range(len(nums)):
+            for j in range(i+1, len(nums)):
+                sum = nums[i] + nums[j]
+                if sum == target:
+                    return [i, j]
+        return False """
+        #2nd attempt
+        d = {}
+        for i, x in enumerate(nums):
+            t = target - x
+            if t in d:
+                return [d[t], i]
+            d[x] = i
+        return None
+
+group-anagrams:
+1st:
+def groupAnagrams(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: List[List[str]]
+        """
+        d = defaultdict(list)
+        for a, i in enumerate(strs):
+            x = "".join(sorted(i))
+            if x in d:
+                continue
+            for j in range(a, len(strs)):
+                z = "".join(sorted(strs[j]))
+                if x == z:
+                    d[x].append(strs[j])
+        return list(d.values())//time-comp prob = n^2.k, we can n.k
+2nd:
+from collections import defaultdict//not needed in lc
+class Solution(object):
+    def groupAnagrams(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: List[List[str]]
+        """
+        d = defaultdict(list)
+        for i in strs:
+            x = "".join(sorted(i))
+            d[x].append(i)
+        return list(d.values())
+
+top k freq elements:
+1st try:
+	c = {}
+        for i in nums:
+            c[i] = c.get(i, 0) + 1
+        t = sorted(c.items(), key = lambda x: x[1], reverse = True)[:k]
+        l = []
+        for i in t:
+            l.append(i[0])
+        return l//nlogn
+
+refurbished:
+import collections
+class Solution(object):
+    def topKFrequent(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+        c = collections.Counter(nums)
+        t = sorted(c.items(), key = lambda x: x[1], reverse = True)[:k]
+        return [x[0] for x in t]//[x for x, _ in t]
+
+heap diye hoi which i didn't try and dict {cnt: num} diyeo kora jai but sort kora lage
+
+bucket[n]:
+class Solution(object):
+    def topKFrequent(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+        c = Counter(nums)
+        b = [[] for _ in range(len(nums) + 1)]
+        for i, x in c.items():
+            b[x].append(i)
+        res = []
+        for i in range(len(b)-1, -1, -1):
+            res.extend(b[i])
+            if len(res) >= k:
+                break
+        return res[:k]
+
+encode, decode:
+class Solution:
+    def encode(self, strs: List[str]) -> str:
+        s = "".join(f"{len(x)}#{x}" for x in strs)
+        return s
+    def decode(self, s: str) -> List[str]:
+        i = 0
+        dig = ""
+        res = []
+        while(i<len(s)):
+            while(s[i] != "#"):
+                dig += s[i]
+                i += 1
+            i += 1
+            res.append(s[i : i + int(dig)])
+            i += int(dig)
+            dig = ""
+        return res
