@@ -1,4 +1,4 @@
-def productExceptSelf(self, nums):
+def productExceptSelf(nums):
         """
         :type nums: List[int]
         :rtype: List[int]
