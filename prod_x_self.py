@@ -1,9 +1,18 @@
-"""brute:
-	r = []
-        p = 1
-        for i in nums:
-            for j in nums:
-                if i != j:#this is a bug, what if [2, 2, 3],Fix: iterate with indices. for i in range(len(nums)): for j in range(len(nums)): if i != j: ...
-                    p *= j
-            r.append(p)
-            p = 1"""
+def productExceptSelf(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        answer = [1] * len(nums) #[1 for x in nums]
+        pfx = 1
+        sfx = 1
+        for i, x in enumerate(nums):
+            answer[i] = pfx
+            pfx *= x
+        for j in range(len(nums)-1, -1, -1):
+            answer[j] *= sfx
+            sfx *= nums[j]
+        return answer
+
+nums = [-1,1,0,-3,3]
+print(productExceptSelf(nums))
